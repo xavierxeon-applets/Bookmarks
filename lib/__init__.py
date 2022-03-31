@@ -11,3 +11,4 @@ from .manager_reclone import ManagerReclone
 from .manager_repo import ManagerRepo
 from .manager_store import ManagerStore
 from .manager_sync import ManagerSync
+from .console import Console

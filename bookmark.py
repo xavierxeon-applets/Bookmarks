@@ -2,9 +2,7 @@
 
 import sys
 
-from .console import Console
-
-from lib import ManagerAbstract
+from lib import Console, ManagerAbstract
 
 
 def printHelpAndExit():
