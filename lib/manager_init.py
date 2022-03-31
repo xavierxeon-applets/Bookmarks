@@ -4,20 +4,20 @@ import os
 
 from .manager_abstract import ManagerAbstract
 
-from xxpystuff.tools import Console
+from .console import Console
+
 
 class ManagerInit(ManagerAbstract):
 
-   def __init__(self, currentPath, tag):
+    def __init__(self, currentPath, tag):
 
-      ManagerAbstract.__init__(self, currentPath, tag)
+        ManagerAbstract.__init__(self, currentPath, tag)
 
-   @classmethod
-   def command(cls):
+    @classmethod
+    def command(cls):
 
-      return 'init'    
-      
-   def execute(self):
+        return 'init'
 
-      self.save()      
-               
+    def execute(self):
+
+        self.save()

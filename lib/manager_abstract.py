@@ -1,51 +1,54 @@
 #!/usr/bin/env python3
 
-import sys, os, json
+import sys
+import os
+import json
 from pathlib import Path
 
-from xxpystuff.tools import Process
+from .process import Process
+
 
 class ManagerAbstract:
 
-   _dbFileName = str(Path.home()) + '/.bookmarks/config.json'
-   _completeFileName = str(Path.home()) + '/.bookmarks/complete.sh'
-   _ComleteExitCode = 22
-   DirKey = 'directories'
-   RepoKey = 'repositories'
+    _dbFileName = str(Path.home()) + '/.bookmarks/config.json'
+    _completeFileName = str(Path.home()) + '/.bookmarks/complete.sh'
+    _ComleteExitCode = 22
+    DirKey = 'directories'
+    RepoKey = 'repositories'
 
-   def __init__(self, currentPath, tag):
-       
-      self.currentPath = currentPath
-      self.tag = tag
+    def __init__(self, currentPath, tag):
 
-      self.data = dict()
-      if os.path.exists(ManagerAbstract._dbFileName):
-         with open(ManagerAbstract._dbFileName, 'r') as infile:
-            self.data = json.load(infile)
+        self.currentPath = currentPath
+        self.tag = tag
 
-      if not ManagerAbstract.DirKey in self.data:
-         self.data[ManagerAbstract.DirKey] = dict()
-      if not ManagerAbstract.RepoKey in self.data:
-         self.data[ManagerAbstract.RepoKey] = dict()
+        self.data = dict()
+        if os.path.exists(ManagerAbstract._dbFileName):
+            with open(ManagerAbstract._dbFileName, 'r') as infile:
+                self.data = json.load(infile)
 
-   @classmethod
-   def command(cls):
+        if not ManagerAbstract.DirKey in self.data:
+            self.data[ManagerAbstract.DirKey] = dict()
+        if not ManagerAbstract.RepoKey in self.data:
+            self.data[ManagerAbstract.RepoKey] = dict()
 
-      raise NotImplementedError
+    @classmethod
+    def command(cls):
 
-   def execute(self):
+        raise NotImplementedError
 
-      raise NotImplementedError
+    def execute(self):
 
-   def save(self):
+        raise NotImplementedError
 
-      with open(ManagerAbstract._dbFileName, 'w') as outfile:
-         json.dump(self.data, outfile, indent = 3)
+    def save(self):
 
-      jumpKeys = self.data[ManagerAbstract.DirKey].keys()
-      recloneKeys = self.data[ManagerAbstract.RepoKey].keys()
-      with open(ManagerAbstract._completeFileName, 'w') as outfile:
-         outfile.write('complete -W "' + ' '.join(list(jumpKeys)) + '" jump\n')
-         outfile.write('complete -W "' + ' '.join(list(recloneKeys)) + '" reclone\n')
+        with open(ManagerAbstract._dbFileName, 'w') as outfile:
+            json.dump(self.data, outfile, indent=3)
 
-      sys.exit(ManagerAbstract._ComleteExitCode)               
+        jumpKeys = self.data[ManagerAbstract.DirKey].keys()
+        recloneKeys = self.data[ManagerAbstract.RepoKey].keys()
+        with open(ManagerAbstract._completeFileName, 'w') as outfile:
+            outfile.write('complete -W "' + ' '.join(list(jumpKeys)) + '" jump\n')
+            outfile.write('complete -W "' + ' '.join(list(recloneKeys)) + '" reclone\n')
+
+        sys.exit(ManagerAbstract._ComleteExitCode)

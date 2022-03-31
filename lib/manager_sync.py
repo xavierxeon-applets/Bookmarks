@@ -4,32 +4,34 @@ import os
 
 from .manager_abstract import ManagerAbstract
 
-from xxpystuff.tools import Console, Process
+from .console import Console
+from .process import Process
+
 
 class ManagerSync(ManagerAbstract):
 
-   def __init__(self, currentPath, tag):
+    def __init__(self, currentPath, tag):
 
-      ManagerAbstract.__init__(self, currentPath, tag)
+        ManagerAbstract.__init__(self, currentPath, tag)
 
-   @classmethod
-   def command(cls):
+    @classmethod
+    def command(cls):
 
-      return 'sync'          
+        return 'sync'
 
-   def execute(self):
+    def execute(self):
 
-      if not self.tag:
-         print(Console.magenta('not ssh source given'))
-         return
+        if not self.tag:
+            print(Console.magenta('not ssh source given'))
+            return
 
-      dbFileName = ManagerAbstract._dbFileName
-      
-      process = Process ('scp')
-      process.startWithArguments(self.tag + ':' + dbFileName, dbFileName)
-      
-      if process.error:
-         print(Console.red(process.error))
-         return
+        dbFileName = ManagerAbstract._dbFileName
 
-      print(Console.green('done'))
+        process = Process('scp')
+        process.startWithArguments(self.tag + ':' + dbFileName, dbFileName)
+
+        if process.error:
+            print(Console.red(process.error))
+            return
+
+        print(Console.green('done'))

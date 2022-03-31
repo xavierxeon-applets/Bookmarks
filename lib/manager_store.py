@@ -4,27 +4,26 @@ import os
 
 from .manager_abstract import ManagerAbstract
 
-from xxpystuff.tools import Console
+from .console import Console
+
 
 class ManagerStore(ManagerAbstract):
 
-   def __init__(self, currentPath, tag):
+    def __init__(self, currentPath, tag):
 
-      ManagerAbstract.__init__(self, currentPath, tag)
+        ManagerAbstract.__init__(self, currentPath, tag)
 
-   @classmethod
-   def command(cls):
+    @classmethod
+    def command(cls):
 
-      return 'store'    
-      
-   def execute(self):
+        return 'store'
 
-      if not self.tag:
-         print(Console.magenta('not tag given'))
-         return
+    def execute(self):
 
-      self.data[ManagerAbstract.DirKey][self.tag] = self.currentPath
-      print('stored ' + Console.yellow(self.tag) + ' @ ' + self.currentPath)
-      self.save()
+        if not self.tag:
+            print(Console.magenta('not tag given'))
+            return
 
-
+        self.data[ManagerAbstract.DirKey][self.tag] = self.currentPath
+        print('stored ' + Console.yellow(self.tag) + ' @ ' + self.currentPath)
+        self.save()
