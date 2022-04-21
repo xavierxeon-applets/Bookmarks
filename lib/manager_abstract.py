@@ -5,9 +5,6 @@ import os
 import json
 from pathlib import Path
 
-from .process import Process
-
-
 class ManagerAbstract:
 
     _dbFileName = str(Path.home()) + '/.bookmarks/config.json'

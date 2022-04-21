@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import os
+from subprocess import run
 
 from .manager_abstract import ManagerAbstract
-
-from .process import Process
 from .console import Console
-
 
 class ManagerRepo(ManagerAbstract):
 
@@ -25,7 +23,8 @@ class ManagerRepo(ManagerAbstract):
             print(Console.magenta('not tag given'))
             return
 
-        giturl = Process.execute(['git', 'config', '--get', 'remote.origin.url'])
+        result = run(['git', 'config', '--get', 'remote.origin.url'], capture_output=True)
+        giturl = result.stdout
         if not giturl:
             print(Console.red('not a git repository'))
             return

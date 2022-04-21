@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 import os
+from subprocess import run
 
 from .manager_abstract import ManagerAbstract
-
 from .console import Console
-from .process import Process
-
 
 class ManagerSync(ManagerAbstract):
 
@@ -22,16 +20,14 @@ class ManagerSync(ManagerAbstract):
     def execute(self):
 
         if not self.tag:
-            print(Console.magenta('not ssh source given'))
+            print(Console.magenta('no ssh source given'))
             return
 
         dbFileName = ManagerAbstract._dbFileName
 
-        process = Process('scp')
-        process.startWithArguments(self.tag + ':' + dbFileName, dbFileName)
-
-        if process.error:
-            print(Console.red(process.error))
+        result = run(['scp', self.tag + ':' + dbFileName,  dbFileName], capture_output=True)
+        if result.stderr:
+            print(Console.red(result.stderr))
             return
 
         print(Console.green('done'))
