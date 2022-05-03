@@ -5,11 +5,12 @@ import os
 import json
 from pathlib import Path
 
+
 class ManagerAbstract:
 
     _dbFileName = str(Path.home()) + '/.bookmarks/config.json'
     _completeFileName = str(Path.home()) + '/.bookmarks/complete.sh'
-    _ComleteExitCode = 22
+    _CompleteExitCode = 22
     DirKey = 'directories'
     RepoKey = 'repositories'
 
@@ -48,4 +49,4 @@ class ManagerAbstract:
             outfile.write('complete -W "' + ' '.join(list(jumpKeys)) + '" jump\n')
             outfile.write('complete -W "' + ' '.join(list(recloneKeys)) + '" reclone\n')
 
-        sys.exit(ManagerAbstract._ComleteExitCode)
+        sys.exit(ManagerAbstract._CompleteExitCode)
