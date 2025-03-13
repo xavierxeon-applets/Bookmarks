@@ -21,8 +21,11 @@ class ManagerAbstract:
 
         self.data = dict()
         if os.path.exists(ManagerAbstract._dbFileName):
-            with open(ManagerAbstract._dbFileName, 'r') as infile:
-                self.data = json.load(infile)
+            try:
+               with open(ManagerAbstract._dbFileName, 'r') as infile:
+                  self.data = json.load(infile)
+            except json.JSONDecodeError:
+               print(f'Error: Failed to read JSON file {ManagerAbstract._dbFileName}. Please check the file format.')
 
         if not ManagerAbstract.DirKey in self.data:
             self.data[ManagerAbstract.DirKey] = dict()
