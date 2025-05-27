@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#
 
 import os
 
@@ -9,21 +9,17 @@ from .console import Console
 
 class ManagerStore(ManagerAbstract):
 
-    def __init__(self, currentPath, tag):
+   @classmethod
+   def command(cls):
 
-        ManagerAbstract.__init__(self, currentPath, tag)
+      return 'store'
 
-    @classmethod
-    def command(cls):
+   def execute(self):
 
-        return 'store'
+      if not self.tag:
+         print(Console.magenta('not tag given'))
+         return
 
-    def execute(self):
-
-        if not self.tag:
-            print(Console.magenta('not tag given'))
-            return
-
-        self.data[ManagerAbstract.DirKey][self.tag] = self.currentPath
-        print('stored ' + Console.yellow(self.tag) + ' @ ' + self.currentPath)
-        self.save()
+      self.data[ManagerAbstract.DirKey][self.tag] = self.currentPath
+      print('stored ' + Console.yellow(self.tag) + ' @ ' + self.currentPath)
+      self.save()

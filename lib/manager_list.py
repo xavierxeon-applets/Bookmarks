@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#
 
 import os
 
@@ -9,26 +9,22 @@ from .console import Console
 
 class ManagerList(ManagerAbstract):
 
-    def __init__(self, currentPath, tag):
+   @classmethod
+   def command(cls):
 
-        ManagerAbstract.__init__(self, currentPath, tag)
+      return 'list'
 
-    @classmethod
-    def command(cls):
+   def execute(self):
 
-        return 'list'
+      if self.data[ManagerAbstract.DirKey]:
+         print('available bookmarks:')
+         for tag, path in self.data[ManagerAbstract.DirKey].items():
+            if os.path.exists(path):
+               print(' * ', Console.green(tag), path)
+            else:
+               print(' * ', Console.magenta(tag), path)
 
-    def execute(self):
-
-        if self.data[ManagerAbstract.DirKey]:
-            print('available bookmarks:')
-            for tag, path in self.data[ManagerAbstract.DirKey].items():
-                if os.path.exists(path):
-                    print(' * ', Console.green(tag), path)
-                else:
-                    print(' * ', Console.magenta(tag), path)
-
-        if self.data[ManagerAbstract.RepoKey]:
-            print('available repositories:')
-            for tag, repoUrl in self.data[ManagerAbstract.RepoKey].items():
-                print(' * ', Console.green(tag), repoUrl)
+      if self.data[ManagerAbstract.RepoKey]:
+         print('available repositories:')
+         for tag, repoUrl in self.data[ManagerAbstract.RepoKey].items():
+            print(' * ', Console.green(tag), repoUrl)

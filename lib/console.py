@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
+#
 
 import platform
+
 
 class Console:
 
@@ -26,11 +27,11 @@ class Console:
 
    @staticmethod
    def _init():
-      
+
       if Console.__initilized:
          return
 
-      # make output look nice in windows cmd window 
+      # make output look nice in windows cmd window
       if platform.platform() == 'Windows':
          from colorama import init
          init()
@@ -40,59 +41,59 @@ class Console:
    def _write(message, bold, color):
       Console._init()
       if bold:
-         return Console.Color.Bold + color + message + Console.Color.Clear    
+         return Console.Color.Bold + color + message + Console.Color.Clear
       else:
-         return color + message + Console.Color.Clear    
+         return color + message + Console.Color.Clear
 
    @staticmethod
-   def grey(message, bold = False):
+   def grey(message, bold=False):
       return Console._write(message, bold, Console.Color.Grey)
 
    @staticmethod
-   def red(message, light = True, bold = False):
+   def red(message, light=True, bold=False):
       if light:
          return Console._write(message, bold, Console.Color.LightRed)
       else:
          return Console._write(message, bold, Console.Color.Red)
 
    @staticmethod
-   def green(message, light = True, bold = False):
+   def green(message, light=True, bold=False):
       if light:
-         return Console._write(message, bold, Console.Color.LightGreen)        
+         return Console._write(message, bold, Console.Color.LightGreen)
       else:
-         return Console._write(message, bold, Console.Color.Green)        
+         return Console._write(message, bold, Console.Color.Green)
 
    @staticmethod
-   def yellow(message, light = True, bold = False):
+   def yellow(message, light=True, bold=False):
       if light:
          return Console._write(message, bold, Console.Color.LightYellow)
       else:
          return Console._write(message, bold, Console.Color.Yellow)
 
    @staticmethod
-   def blue(message, light = True, bold = False):
+   def blue(message, light=True, bold=False):
       if light:
          return Console._write(message, bold, Console.Color.LightBlue)
       else:
          return Console._write(message, bold, Console.Color.Blue)
-         
+
    @staticmethod
-   def magenta(message, light = True, bold = False):
+   def magenta(message, light=True, bold=False):
       if light:
          return Console._write(message, bold, Console.Color.LightMagenta)
       else:
          return Console._write(message, bold, Console.Color.Magenta)
 
    @staticmethod
-   def cyan(message, light = True, bold = False):
+   def cyan(message, light=True, bold=False):
       if light:
          return Console._write(message, bold, Console.Color.LightCyan)
       else:
          return Console._write(message, bold, Console.Color.Cyan)
 
    @staticmethod
-   def white(message, bold = False):
-      return Console._write(message, bold, Console.Color.White)  
+   def white(message, bold=False):
+      return Console._write(message, bold, Console.Color.White)
 
    @staticmethod
    def qtFriendly(message):

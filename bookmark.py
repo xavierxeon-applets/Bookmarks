@@ -21,7 +21,7 @@ def printHelpAndExit():
    print('')
    print('   * list: list stored dirs and repos')
    print('   * clear [tag]: remove tag')
-   print('   * sync [ssh_source]: use scp to copy bookmarks from source')
+   print('   * gui: show the admin gui')
    sys.exit(0)
 
 

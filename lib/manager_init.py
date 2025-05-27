@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#
 
 import os
 
@@ -9,15 +9,11 @@ from .console import Console
 
 class ManagerInit(ManagerAbstract):
 
-    def __init__(self, currentPath, tag):
+   @classmethod
+   def command(cls):
 
-        ManagerAbstract.__init__(self, currentPath, tag)
+      return 'init'
 
-    @classmethod
-    def command(cls):
+   def execute(self):
 
-        return 'init'
-
-    def execute(self):
-
-        self.save()
+      self.save()

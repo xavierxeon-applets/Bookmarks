@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#
 
 from .manager_abstract import ManagerAbstract
 
@@ -7,32 +7,28 @@ from .console import Console
 
 class ManagerClear(ManagerAbstract):
 
-    def __init__(self, currentPath, tag):
+   @classmethod
+   def command(cls):
 
-        ManagerAbstract.__init__(self, currentPath, tag)
+      return 'clear'
 
-    @classmethod
-    def command(cls):
+   def execute(self):
 
-        return 'clear'
+      if not self.tag:
+         print(Console.magenta('no tag given'))
+         return
 
-    def execute(self):
+      inDir = self.tag in self.data[ManagerAbstract.DirKey]
+      inRepo = self.tag in self.data[ManagerAbstract.RepoKey]
+      if not inDir and not inRepo:
+         print(Console.magenta('unkown tag'), ':', self.tag)
+         return
 
-        if not self.tag:
-            print(Console.magenta('no tag given'))
-            return
+      if inDir:
+         del self.data[ManagerAbstract.DirKey][self.tag]
+      if inRepo:
+         del self.data[ManagerAbstract.RepoKey][self.tag]
 
-        inDir = self.tag in self.data[ManagerAbstract.DirKey]
-        inRepo = self.tag in self.data[ManagerAbstract.RepoKey]
-        if not inDir and not inRepo:
-            print(Console.magenta('unkown tag'), ':', self.tag)
-            return
+      self.save()
 
-        if inDir:
-            del self.data[ManagerAbstract.DirKey][self.tag]
-        if inRepo:
-            del self.data[ManagerAbstract.RepoKey][self.tag]
-
-        self.save()
-
-        print(Console.green('removed tag'), ':', self.tag)
+      print(Console.green('removed tag'), ':', self.tag)

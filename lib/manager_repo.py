@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#
 
 import os
 from subprocess import run
@@ -6,30 +6,27 @@ from subprocess import run
 from .manager_abstract import ManagerAbstract
 from .console import Console
 
+
 class ManagerRepo(ManagerAbstract):
 
-    def __init__(self, currentPath, tag):
+   @classmethod
+   def command(cls):
 
-        ManagerAbstract.__init__(self, currentPath, tag)
+      return 'repo'
 
-    @classmethod
-    def command(cls):
+   def execute(self):
 
-        return 'repo'
+      if not self.tag:
+         print(Console.magenta('not tag given'))
+         return
 
-    def execute(self):
+      result = run(['git', 'config', '--get', 'remote.origin.url'], capture_output=True)
+      giturl = result.stdout
+      if not giturl:
+         print(Console.red('not a git repository'))
+         return
 
-        if not self.tag:
-            print(Console.magenta('not tag given'))
-            return
-
-        result = run(['git', 'config', '--get', 'remote.origin.url'], capture_output=True)
-        giturl = result.stdout
-        if not giturl:
-            print(Console.red('not a git repository'))
-            return
-
-        giturl = giturl.decode().strip()
-        self.data[ManagerAbstract.RepoKey][self.tag] = giturl
-        print('stored ' + Console.yellow(self.tag) + ' @ ' + giturl)
-        self.save()
+      giturl = giturl.decode().strip()
+      self.data[ManagerAbstract.RepoKey][self.tag] = giturl
+      print('stored ' + Console.yellow(self.tag) + ' @ ' + giturl)
+      self.save()
