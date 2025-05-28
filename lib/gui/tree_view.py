@@ -2,29 +2,35 @@
 
 from PySide6.QtWidgets import QTreeView
 
+from functools import partial
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMenu
 
-from ..console import Console
-from ..manager_jump import ManagerJump
+
 from ..manager_clear import ManagerClear
 
 
 class TreeView(QTreeView):
 
-   def __init__(self, manager, model, hasJump):
+   def __init__(self, manager, model):
 
       QTreeView.__init__(self)
       self._manager = manager
       self._model = model
-      self._hasJump = hasJump
 
       self.setModel(self._model)
       self.setRootIsDecorated(False)
 
       self.setContextMenuPolicy(Qt.CustomContextMenu)
       self.customContextMenuRequested.connect(self._contextMenuRequested)
+
+      self._menuFunctions = {'Remove': self._remove}
+
+   def prependContextMenuFunction(self, name, function):
+
+      content = {name: function}
+      self._menuFunctions = {**content, **self._menuFunctions}
 
    def _contextMenuRequested(self, position):
 
@@ -34,27 +40,16 @@ class TreeView(QTreeView):
          return
 
       menu = QMenu(self)
-      if self._hasJump:
-         jump_action = menu.addAction("Jump")
-         menu.addSeparator()
-      remove_action = menu.addAction("Remove")
+      for name, function in self._menuFunctions.items():
+         if not function:
+            menu.addSeparator()
+         else:
+            action = menu.addAction(name)
+            nameFunction = partial(function, nameList)
+            action.triggered.connect(nameFunction)
 
       pos = self.viewport().mapToGlobal(position)
-      selected_action = menu.exec_(pos)
-
-      if selected_action == remove_action:
-         self._remove(nameList)
-      elif self._hasJump and selected_action == jump_action:
-         self._jump(nameList)
-
-   def _jump(self, nameList):
-
-      if not nameList:
-         return
-
-      name = nameList[0]
-      jumpManager = ManagerJump(None, name)
-      return jumpManager.execute()
+      menu.exec_(pos)
 
    def _remove(self, nameList):
 
