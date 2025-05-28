@@ -19,4 +19,4 @@ class ManagerGui(ManagerAbstract):
    def execute(self):
 
       from .gui import main_gui
-      main_gui()
+      main_gui(self)

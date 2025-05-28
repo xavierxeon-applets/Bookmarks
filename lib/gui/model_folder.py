@@ -1,14 +1,26 @@
 #
 
-from PySide6.QtGui import QStandardItemModel
+from .model_abstract import ModelAbstract
+
+from PySide6.QtGui import QStandardItem
+
+from ..manager_abstract import ManagerAbstract
 
 
-class ModelFolder(QStandardItemModel):
+class ModelFolder(ModelAbstract):
 
-   def __init__(self):
+   def __init__(self, manager):
 
-      super().__init__()
+      ModelAbstract.__init__(self, manager, ManagerAbstract.DirKey)
+      self.update()
 
-      self.setHorizontalHeaderLabels(['Name', 'Type', 'Size', 'Date'])
-      self.setColumnCount(4)
-      self.setRowCount(0)
+   def update(self):
+
+      self.clear()
+      self.setHorizontalHeaderLabels(['Name', 'Path'])
+
+      data = self.loadData()
+      for name, path in data.items():
+         nameItem = QStandardItem(name)
+         pathItem = QStandardItem(path)
+         self.invisibleRootItem().appendRow([nameItem, pathItem])

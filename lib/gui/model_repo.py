@@ -1,14 +1,26 @@
 #
 
-from PySide6.QtGui import QStandardItemModel
+from .model_abstract import ModelAbstract
+
+from PySide6.QtGui import QStandardItem
+
+from ..manager_abstract import ManagerAbstract
 
 
-class ModelRepo(QStandardItemModel):
+class ModelRepo(ModelAbstract):
 
-   def __init__(self):
+   def __init__(self, manager):
 
-      super().__init__()
+      ModelAbstract.__init__(self, manager, ManagerAbstract.RepoKey)
+      self.update()
 
-      self.setHorizontalHeaderLabels(['Name', 'Type', 'Size', 'Date'])
-      self.setColumnCount(4)
-      self.setRowCount(0)
+   def update(self):
+
+      self.clear()
+      self.setHorizontalHeaderLabels(['Name', 'Url'])
+
+      data = self.loadData()
+      for name, url in data.items():
+         nameItem = QStandardItem(name)
+         urlItem = QStandardItem(url)
+         self.invisibleRootItem().appendRow([nameItem, urlItem])

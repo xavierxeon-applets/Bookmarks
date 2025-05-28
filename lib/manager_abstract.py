@@ -41,7 +41,7 @@ class ManagerAbstract:
 
       raise NotImplementedError
 
-   def save(self):
+   def save(self, exit=True):
 
       with open(ManagerAbstract._dbFileName, 'w') as outfile:
          json.dump(self.data, outfile, indent=3)
@@ -52,4 +52,5 @@ class ManagerAbstract:
          outfile.write('complete -W "' + ' '.join(list(jumpKeys)) + '" jump\n')
          outfile.write('complete -W "' + ' '.join(list(recloneKeys)) + '" reclone\n')
 
-      sys.exit(ManagerAbstract._CompleteExitCode)
+      if exit:
+         sys.exit(ManagerAbstract._CompleteExitCode)
