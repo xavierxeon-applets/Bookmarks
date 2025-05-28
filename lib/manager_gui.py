@@ -1,7 +1,5 @@
 #
 
-import os
-
 from .manager_abstract import ManagerAbstract
 
 

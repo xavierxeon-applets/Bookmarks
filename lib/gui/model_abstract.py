@@ -2,49 +2,37 @@
 
 from PySide6.QtGui import QStandardItemModel
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor
+
 import json
 
 from ..manager_abstract import ManagerAbstract
-from ..console import Console
 
 
 class ModelAbstract(QStandardItemModel):
 
-   def __init__(self, manager, sectionName):
+   ColorError = QColor(Qt.red)
+
+   def __init__(self, sectionName):
 
       QStandardItemModel.__init__(self)
-      self._manager = manager
-      self._sectionName = sectionName
+      self.sectionName = sectionName
 
    def loadData(self):
 
       with open(ManagerAbstract._dbFileName, 'r') as infile:
          data = json.load(infile)
 
-      return data[self._sectionName] if self._sectionName in data else dict()
+      return data[self.sectionName] if self.sectionName in data else dict()
 
-   def removeSelection(self, treeView):
+   def getNamesFromIndex(self, indexList):
 
-      if not treeView:
-         return
-
-      nameList = self._getNamesFromSelection(treeView)
-      if not nameList:
-         return
-
-      for name in nameList:
-
-         print(Console.green('removed tag'), ':', name)
-         del self._manager.data[self._sectionName][name]
-
-      self._manager.save(False)
-      self.update()
-
-   def _getNamesFromSelection(self, treeView):
-
-      indexList = treeView.selectedIndexes()
       if not indexList:
          return list()
+
+      if not isinstance(indexList, list):
+         indexList = [indexList]
 
       rowList = list()
       for index in indexList:

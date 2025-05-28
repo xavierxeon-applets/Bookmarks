@@ -9,9 +9,9 @@ from ..manager_abstract import ManagerAbstract
 
 class ModelRepo(ModelAbstract):
 
-   def __init__(self, manager):
+   def __init__(self):
 
-      ModelAbstract.__init__(self, manager, ManagerAbstract.RepoKey)
+      ModelAbstract.__init__(self, ManagerAbstract.RepoKey)
       self.update()
 
    def update(self):
@@ -21,6 +21,11 @@ class ModelRepo(ModelAbstract):
 
       data = self.loadData()
       for name, url in data.items():
+
          nameItem = QStandardItem(name)
+         nameItem.setEditable(False)
+
          urlItem = QStandardItem(url)
+         urlItem.setEditable(False)
+
          self.invisibleRootItem().appendRow([nameItem, urlItem])
