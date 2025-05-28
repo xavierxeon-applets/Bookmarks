@@ -25,10 +25,14 @@ class ManagerClear(ManagerAbstract):
          return
 
       if inDir:
-         del self.data[ManagerAbstract.DirKey][self.tag]
+         self.clear(ManagerAbstract.DirKey, self.tag)
       if inRepo:
-         del self.data[ManagerAbstract.RepoKey][self.tag]
+         self.clear(ManagerAbstract.RepoKey, self.tag)
 
       self.save()
 
-      print(Console.green('removed tag'), ':', self.tag)
+   def clear(self, sectionName, tag):
+
+      del self.data[sectionName][tag]
+
+      print(Console.green('removed tag'), ':', tag, ' from section', sectionName)

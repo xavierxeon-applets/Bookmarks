@@ -2,15 +2,13 @@
 
 from PySide6.QtWidgets import QTreeView
 
-import os
-import sys
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMenu
 
 from ..console import Console
-from ..manager_abstract import ManagerAbstract
 from ..manager_jump import ManagerJump
+from ..manager_clear import ManagerClear
 
 
 class TreeView(QTreeView):
@@ -55,23 +53,17 @@ class TreeView(QTreeView):
          return
 
       name = nameList[0]
-      path = self._manager.data[ManagerAbstract.DirKey][name]
-
-      if not os.path.exists(path):
-         print(Console.red('direcotry does not exists'), ':', path, 'for tag', name)
-         return
-
-      with open(ManagerJump._jumpFile, 'w') as outfile:
-         outfile.write(path)
-
-      sys.exit(ManagerJump._JumpExitCode)
+      jumpManager = ManagerJump(None, name)
+      return jumpManager.execute()
 
    def _remove(self, nameList):
 
+      if not nameList:
+         return
+
+      clearManager = ManagerClear(None, None)
       for name in nameList:
+         clearManager.clear(self._model.sectionName, name)
+      clearManager.save(False)
 
-         print(Console.green('removed tag'), ':', name)
-         del self._manager.data[self._model.sectionName][name]
-
-      self._manager.save(False)
       self._model.update()
