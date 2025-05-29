@@ -2,7 +2,7 @@
 from PySide6.QtWidgets import QWidget
 
 
-from PySide6.QtWidgets import QVBoxLayout, QLabel
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QStatusBar
 
 from .model_folder import ModelFolder
 from .model_repo import ModelRepo
@@ -18,19 +18,24 @@ class MainWidget(QWidget):
       super().__init__()
       self.setWindowTitle('Bookmarks Manager')
 
+      # folder
       self.modelFolder = ModelFolder()
-      self.modelRepo = ModelRepo()
-
       self.labelFolder = QLabel('Folders')
 
       self.treeViewFolder = TreeView(manager, self.modelFolder)
       self.treeViewFolder.prependContextMenuFunction('Jump', self._jump)
       self.treeViewFolder.prependContextMenuFunction('Spacer', None)
 
+      # repository
+      self.modelRepo = ModelRepo()
       self.labelRepo = QLabel('Repositories')
 
       self.treeViewRepo = TreeView(manager, self.modelRepo)
 
+      # other
+      self.statusBar = QStatusBar()
+
+      # layout
       self.masterLayout = QVBoxLayout()
       self.setLayout(self.masterLayout)
 
@@ -40,10 +45,13 @@ class MainWidget(QWidget):
       self.masterLayout.addWidget(self.labelRepo)
       self.masterLayout.addWidget(self.treeViewRepo)
 
-      settings = Settings()
-      self.restoreGeometry(settings.value('geometry', b''))
+      self.masterLayout.addWidget(self.statusBar)
 
+      # settings
+      settings = Settings()
       print('settings @ ', settings.fileName())
+
+      self.restoreGeometry(settings.value('geometry', b''))
 
    def closeEvent(self, event):
 
