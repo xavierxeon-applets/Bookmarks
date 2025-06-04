@@ -3,17 +3,45 @@
 from PySide6.QtGui import QStandardItemModel
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
+from PySide6.QtGui import QStandardItem, QColor
 
 import json
 
 from ..manager_abstract import ManagerAbstract
 
 
+class Item(QStandardItem):
+
+   def __init__(self, name, url):
+
+      QStandardItem.__init__(self)
+
+      self.name = name
+      self.url = url
+
+      self.setEditable(False)
+
+   def data(self, role):
+
+      if role == ModelAbstract.RoleName:
+         return self.name
+      elif role == ModelAbstract.RoleValue:
+         return self.url
+
+      return QStandardItem.data(self, role)
+
+   def setData(self, value, role):
+
+      if ModelAbstract.RoleMouse == role:
+         print(f'mouse @ {value}')
+
+
 class ModelAbstract(QStandardItemModel):
 
    ColorError = QColor(Qt.red)
    RoleName = Qt.UserRole + 1
+   RoleValue = Qt.UserRole + 2
+   RoleMouse = Qt.UserRole + 3
 
    def __init__(self, sectionName):
 
@@ -52,3 +80,12 @@ class ModelAbstract(QStandardItemModel):
          nameList.append(name)
 
       return nameList
+
+   def roleNames(self):
+
+      data = dict()
+      data[ModelAbstract.RoleName] = 'name'.encode()
+      data[ModelAbstract.RoleValue] = 'value'.encode()
+      data[ModelAbstract.RoleMouse] = 'mouse'.encode()
+
+      return data

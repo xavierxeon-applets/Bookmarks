@@ -1,21 +1,26 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Layouts
 
-Item {
+Rectangle {
+    color: palette.base
+
     GridLayout {
         id: grid
-        columns: 2
         anchors.fill: parent
 
-        Text {
+        columns: 2
+        columnSpacing: 0
+
+        Header {
             text: "Folders"
-            font.bold: true
+            Layout.fillWidth: true
         }
-        Text {
+        Header {
             text: "Repos"
-            font.bold: true
+            Layout.fillWidth: true
         }
         FolderView {
+
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
