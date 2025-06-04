@@ -2,14 +2,36 @@
 
 from .model_abstract import ModelAbstract
 
-import os
-
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QStandardItem
 
 from ..manager_abstract import ManagerAbstract
 
 
+class ItemFolder(QStandardItem):
+
+   def __init__(self, name, path):
+
+      QStandardItem.__init__(self)
+
+      self.name = name
+      self.path = path
+
+      self.setEditable(False)
+
+   def data(self, role):
+
+      if role == ModelAbstract.RoleName:
+         return self.name
+      elif role == ModelFolder.RolePath:
+         return self.path
+
+      return QStandardItem.data(self, role)
+
+
 class ModelFolder(ModelAbstract):
+
+   RolePath = Qt.UserRole + 2
 
    def __init__(self):
 
@@ -19,19 +41,16 @@ class ModelFolder(ModelAbstract):
    def update(self):
 
       self.clear()
-      self.setHorizontalHeaderLabels(['Name', 'Path'])
 
       data = self.loadData()
       for name, path in data.items():
+         item = ItemFolder(name, path)
+         self.invisibleRootItem().appendRow([item])
 
-         nameItem = QStandardItem(name)
-         nameItem.setEditable(False)
+   def roleNames(self):
 
-         pathItem = QStandardItem(path)
-         pathItem.setEditable(False)
+      data = dict()
+      data[ModelAbstract.RoleName] = 'name'.encode()
+      data[ModelFolder.RolePath] = 'path'.encode()
 
-         if not os.path.exists(path):
-            nameItem.setForeground(ModelAbstract.ColorError)
-            pathItem.setForeground(ModelAbstract.ColorError)
-
-         self.invisibleRootItem().appendRow([nameItem, pathItem])
+      return data

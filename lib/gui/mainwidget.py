@@ -1,13 +1,14 @@
 #
+import os
 from PySide6.QtWidgets import QWidget
 
-
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QStatusBar
+from PySide6.QtCore import QUrl
+from PySide6.QtWidgets import QVBoxLayout, QCommandLinkButton, QStatusBar, QSizePolicy
+from PySide6.QtQuickWidgets import QQuickWidget
 
 from .model_folder import ModelFolder
 from .model_repo import ModelRepo
 from .settings import Settings
-from .tree_view import TreeView
 from ..manager_jump import ManagerJump
 
 
@@ -18,33 +19,32 @@ class MainWidget(QWidget):
       super().__init__()
       self.setWindowTitle('Bookmarks Manager')
 
-      # folder
+      # view
+      self.quickView = QQuickWidget()
+      self.quickView.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
+      self.quickView.setResizeMode(QQuickWidget.SizeRootObjectToView)
+
+      # models
       self.modelFolder = ModelFolder()
-      self.labelFolder = QLabel('Folders')
+      self.quickView.rootContext().setContextProperty('folderModel', self.modelFolder)
 
-      self.treeViewFolder = TreeView(manager, self.modelFolder)
-      self.treeViewFolder.prependContextMenuFunction('Jump', self._jump)
-      self.treeViewFolder.prependContextMenuFunction('Spacer', None)
-
-      # repository
       self.modelRepo = ModelRepo()
-      self.labelRepo = QLabel('Repositories')
+      self.quickView.rootContext().setContextProperty('repoModel', self.modelRepo)
 
-      self.treeViewRepo = TreeView(manager, self.modelRepo)
+      # load
+      localPath = os.path.dirname(__file__)
+      self.quickView.setSource(QUrl.fromLocalFile(localPath + '/qml/MainItem.qml'))
 
       # other
-      self.statusBar = QStatusBar()
+      self.removeButton = QCommandLinkButton('REMOVE', 'remove selected entries')
+      self.statusBar = QStatusBar()  # without status bar, the window is not resizable in WSL
 
       # layout
       self.masterLayout = QVBoxLayout()
       self.setLayout(self.masterLayout)
 
-      self.masterLayout.addWidget(self.labelFolder)
-      self.masterLayout.addWidget(self.treeViewFolder)
-
-      self.masterLayout.addWidget(self.labelRepo)
-      self.masterLayout.addWidget(self.treeViewRepo)
-
+      self.masterLayout.addWidget(self.quickView)
+      self.masterLayout.addWidget(self.removeButton)
       self.masterLayout.addWidget(self.statusBar)
 
       # settings

@@ -13,6 +13,7 @@ from ..manager_abstract import ManagerAbstract
 class ModelAbstract(QStandardItemModel):
 
    ColorError = QColor(Qt.red)
+   RoleName = Qt.UserRole + 1
 
    def __init__(self, sectionName):
 
