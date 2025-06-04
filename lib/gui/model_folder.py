@@ -1,9 +1,14 @@
 #
 
-from .model_abstract import ModelAbstract, Item
 
+from .model_abstract import ModelAbstract
+
+import os
+
+from .value_item import ValueItem
 
 from ..manager_abstract import ManagerAbstract
+from ..manager_jump import ManagerJump
 
 
 class ModelFolder(ModelAbstract):
@@ -19,5 +24,15 @@ class ModelFolder(ModelAbstract):
 
       data = self.loadData()
       for name, path in data.items():
-         item = Item(name, path)
+         exists = os.path.exists(path)
+         item = ValueItem(name, path, exists)
          self.invisibleRootItem().appendRow([item])
+
+   def _jump(self, nameList):
+
+      if not nameList:
+         return
+
+      name = nameList[0]
+      jumpManager = ManagerJump(None, name)
+      return jumpManager.execute()

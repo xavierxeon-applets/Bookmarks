@@ -2,46 +2,15 @@
 
 from PySide6.QtGui import QStandardItemModel
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QStandardItem, QColor
-
 import json
 
+from .value_item import ValueItem
+
 from ..manager_abstract import ManagerAbstract
-
-
-class Item(QStandardItem):
-
-   def __init__(self, name, url):
-
-      QStandardItem.__init__(self)
-
-      self.name = name
-      self.url = url
-
-      self.setEditable(False)
-
-   def data(self, role):
-
-      if role == ModelAbstract.RoleName:
-         return self.name
-      elif role == ModelAbstract.RoleValue:
-         return self.url
-
-      return QStandardItem.data(self, role)
-
-   def setData(self, value, role):
-
-      if ModelAbstract.RoleMouse == role:
-         print(f'mouse @ {value}')
+from ..manager_clear import ManagerClear
 
 
 class ModelAbstract(QStandardItemModel):
-
-   ColorError = QColor(Qt.red)
-   RoleName = Qt.UserRole + 1
-   RoleValue = Qt.UserRole + 2
-   RoleMouse = Qt.UserRole + 3
 
    def __init__(self, sectionName):
 
@@ -83,9 +52,28 @@ class ModelAbstract(QStandardItemModel):
 
    def roleNames(self):
 
-      data = dict()
-      data[ModelAbstract.RoleName] = 'name'.encode()
-      data[ModelAbstract.RoleValue] = 'value'.encode()
-      data[ModelAbstract.RoleMouse] = 'mouse'.encode()
+      return ValueItem.roleNames()
 
-      return data
+   def removeSelected(self):
+
+      nameList = self._getCheckedNames()
+      if not nameList:
+         return
+
+      clearManager = ManagerClear(None, None)
+      for name in nameList:
+         clearManager.clear(self.sectionName, name)
+      clearManager.save(False)
+
+      self.update()
+
+   def _getCheckedNames(self):
+
+      nameList = list()
+      for row in range(self.rowCount()):
+         index = self.index(row, 0)
+         item = self.itemFromIndex(index)
+         if item.checked:
+            nameList.append(item.name)
+
+      return nameList

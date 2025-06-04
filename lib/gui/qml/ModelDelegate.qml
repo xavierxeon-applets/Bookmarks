@@ -1,10 +1,12 @@
 import QtQuick
 
 Rectangle {
-    height: 40
-    width: parent.width
+    id: modelDelegate
 
-    color: "red"
+    height: 40
+    width: parent ? parent.width : 0
+
+    color: model.bgcolor
 
     Column {
         Item {
@@ -17,16 +19,19 @@ Rectangle {
         }
         Text {
             text: '  ' + model.value
+            color: model.textcolor
         }
     }
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            model.mouse = 'clicked';
+            model.interaction = 'clicked';
+            modelDelegate.color = model.bgcolor; // Change color on click
         }
         onDoubleClicked: {
-            model.mouse = 'doubleClicked';
+            model.interaction = 'doubleClicked';
+            modelDelegate.color = model.bgcolor; // Change color on click
         }
     }
 }

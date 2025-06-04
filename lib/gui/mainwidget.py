@@ -9,7 +9,6 @@ from PySide6.QtQuickWidgets import QQuickWidget
 from .model_folder import ModelFolder
 from .model_repo import ModelRepo
 from .settings import Settings
-from ..manager_jump import ManagerJump
 
 
 class MainWidget(QWidget):
@@ -37,6 +36,8 @@ class MainWidget(QWidget):
 
       # other
       self.removeButton = QCommandLinkButton('REMOVE', 'remove selected entries')
+      self.removeButton.clicked.connect(self.remove)
+
       self.statusBar = QStatusBar()  # without status bar, the window is not resizable in WSL
 
       # layout
@@ -60,11 +61,8 @@ class MainWidget(QWidget):
 
       event.accept()
 
-   def _jump(self, nameList):
+   def remove(self):
 
-      if not nameList:
-         return
-
-      name = nameList[0]
-      jumpManager = ManagerJump(None, name)
-      return jumpManager.execute()
+      print('remove selected entries')
+      self.modelFolder.removeSelected()
+      self.modelRepo.removeSelected()
