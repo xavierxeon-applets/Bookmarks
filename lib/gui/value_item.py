@@ -51,7 +51,7 @@ class ValueItem(QStandardItem):
             self.checked = not self.checked
          elif 'doubleClicked' in value:
             self.checked = not self.checked
-            print(f'double clicked {self.name} ')
+            self.model().doubleClicked(self.name)
          else:
             print(f'intraction {value} @ {self.name}')
 

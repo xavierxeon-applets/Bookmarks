@@ -4,6 +4,9 @@
 from .model_abstract import ModelAbstract
 
 import os
+from functools import partial
+
+from PySide6.QtCore import QTimer
 
 from .value_item import ValueItem
 
@@ -28,11 +31,12 @@ class ModelFolder(ModelAbstract):
          item = ValueItem(name, path, exists)
          self.invisibleRootItem().appendRow([item])
 
-   def _jump(self, nameList):
+   def doubleClicked(self, name):
 
-      if not nameList:
-         return
+      my_function = partial(self._jump, name)
+      QTimer.singleShot(0, my_function)
 
-      name = nameList[0]
+   def _jump(self, name):
+
       jumpManager = ManagerJump(None, name)
       return jumpManager.execute()

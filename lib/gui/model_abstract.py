@@ -54,6 +54,10 @@ class ModelAbstract(QStandardItemModel):
 
       return ValueItem.roleNames()
 
+   def doubleClicked(self, name):
+
+      pass
+
    def removeSelected(self):
 
       nameList = self._getCheckedNames()
