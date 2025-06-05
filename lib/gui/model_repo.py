@@ -1,8 +1,7 @@
 #
 
 from .model_abstract import ModelAbstract
-
-from PySide6.QtGui import QStandardItem
+from .value_item import ValueItem
 
 from ..manager_abstract import ManagerAbstract
 
@@ -17,15 +16,8 @@ class ModelRepo(ModelAbstract):
    def update(self):
 
       self.clear()
-      self.setHorizontalHeaderLabels(['Name', 'Url'])
 
       data = self.loadData()
       for name, url in data.items():
-
-         nameItem = QStandardItem(name)
-         nameItem.setEditable(False)
-
-         urlItem = QStandardItem(url)
-         urlItem.setEditable(False)
-
-         self.invisibleRootItem().appendRow([nameItem, urlItem])
+         item = ValueItem(name, url)
+         self.invisibleRootItem().appendRow([item])

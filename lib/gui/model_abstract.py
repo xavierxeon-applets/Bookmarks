@@ -2,17 +2,15 @@
 
 from PySide6.QtGui import QStandardItemModel
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor
-
 import json
 
+from .value_item import ValueItem
+
 from ..manager_abstract import ManagerAbstract
+from ..manager_clear import ManagerClear
 
 
 class ModelAbstract(QStandardItemModel):
-
-   ColorError = QColor(Qt.red)
 
    def __init__(self, sectionName):
 
@@ -49,5 +47,37 @@ class ModelAbstract(QStandardItemModel):
          nameItem = self.itemFromIndex(index)
          name = nameItem.text()
          nameList.append(name)
+
+      return nameList
+
+   def roleNames(self):
+
+      return ValueItem.roleNames()
+
+   def doubleClicked(self, name):
+
+      pass
+
+   def removeSelected(self):
+
+      nameList = self._getCheckedNames()
+      if not nameList:
+         return
+
+      clearManager = ManagerClear(None, None)
+      for name in nameList:
+         clearManager.clear(self.sectionName, name)
+      clearManager.save(False)
+
+      self.update()
+
+   def _getCheckedNames(self):
+
+      nameList = list()
+      for row in range(self.rowCount()):
+         index = self.index(row, 0)
+         item = self.itemFromIndex(index)
+         if item.checked:
+            nameList.append(item.name)
 
       return nameList

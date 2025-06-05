@@ -1,12 +1,17 @@
 #
 
+
 from .model_abstract import ModelAbstract
 
 import os
+from functools import partial
 
-from PySide6.QtGui import QStandardItem
+from PySide6.QtCore import QTimer
+
+from .value_item import ValueItem
 
 from ..manager_abstract import ManagerAbstract
+from ..manager_jump import ManagerJump
 
 
 class ModelFolder(ModelAbstract):
@@ -19,19 +24,19 @@ class ModelFolder(ModelAbstract):
    def update(self):
 
       self.clear()
-      self.setHorizontalHeaderLabels(['Name', 'Path'])
 
       data = self.loadData()
       for name, path in data.items():
+         exists = os.path.exists(path)
+         item = ValueItem(name, path, exists)
+         self.invisibleRootItem().appendRow([item])
 
-         nameItem = QStandardItem(name)
-         nameItem.setEditable(False)
+   def doubleClicked(self, name):
 
-         pathItem = QStandardItem(path)
-         pathItem.setEditable(False)
+      my_function = partial(self._jump, name)
+      QTimer.singleShot(0, my_function)
 
-         if not os.path.exists(path):
-            nameItem.setForeground(ModelAbstract.ColorError)
-            pathItem.setForeground(ModelAbstract.ColorError)
+   def _jump(self, name):
 
-         self.invisibleRootItem().appendRow([nameItem, pathItem])
+      jumpManager = ManagerJump(None, name)
+      return jumpManager.execute()
