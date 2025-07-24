@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#
 
 from .manager_abstract import ManagerAbstract
 
@@ -11,5 +11,3 @@ from .manager_list import ManagerList
 from .manager_reclone import ManagerReclone
 from .manager_repo import ManagerRepo
 from .manager_store import ManagerStore
-
-from .console import Console
