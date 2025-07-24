@@ -24,8 +24,16 @@ function bmk {
 
    if [ "$BOOKMARK_RETURN_CODE" == "44" ]
    then   
-      local JUMP_DIR=$(cat ~/.bookmarks/repo)
-      git clone "$JUMP_DIR"
+      local TARGET=$(cat ~/.bookmarks/repo)
+      git clone "$TARGET"
+      return
+   fi
+
+   if [ "$BOOKMARK_RETURN_CODE" == "55" ]
+   then   
+      local TARGET=$(cat ~/.bookmarks/sync)
+      fsync init "$TARGET"
+      fsync pull
       return
    fi
 }

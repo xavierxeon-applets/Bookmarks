@@ -4,7 +4,7 @@ import os
 
 from .manager_abstract import ManagerAbstract
 
-from .console import Console
+from ..console import Console
 
 
 class ManagerList(ManagerAbstract):
@@ -28,3 +28,8 @@ class ManagerList(ManagerAbstract):
          print('available repositories:')
          for tag, repoUrl in self.data[ManagerAbstract.RepoKey].items():
             print(' * ', Console.green(tag), repoUrl)
+
+      if self.data[ManagerAbstract.SyncKey]:
+         print('available sync folders:')
+         for tag, syncPath in self.data[ManagerAbstract.SyncKey].items():
+            print(' * ', Console.green(tag), syncPath)

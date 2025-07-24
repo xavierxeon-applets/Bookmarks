@@ -13,6 +13,7 @@ class ManagerAbstract:
    _CompleteExitCode = 22
    DirKey = 'directories'
    RepoKey = 'repositories'
+   SyncKey = 'folder_sync'
 
    def __init__(self, currentPath, tag):
 
@@ -27,10 +28,13 @@ class ManagerAbstract:
          except json.JSONDecodeError:
             print(f'Error: Failed to read JSON file {ManagerAbstract._dbFileName}. Please check the file format.')
 
-      if not ManagerAbstract.DirKey in self.data:
-         self.data[ManagerAbstract.DirKey] = dict()
-      if not ManagerAbstract.RepoKey in self.data:
-         self.data[ManagerAbstract.RepoKey] = dict()
+      self._initData(ManagerAbstract.DirKey)
+      self._initData(ManagerAbstract.RepoKey)
+      self._initData(ManagerAbstract.SyncKey)
+
+   def _initData(self, key):
+      if not key in self.data:
+         self.data[key] = dict()
 
    @classmethod
    def command(cls):

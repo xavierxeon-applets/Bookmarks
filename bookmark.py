@@ -2,7 +2,8 @@
 
 import sys
 
-from lib_bmk import Console, ManagerAbstract
+from lib import Console
+from lib.bmk import ManagerAbstract
 
 
 def printHelpAndExit():
@@ -10,15 +11,22 @@ def printHelpAndExit():
    print(Console.cyan('bmk', light=False) + ' [command] [tag]')
    print('   jump around the file system')
    print('')
-   print('   ' + Console.blue('COMMANDS:'))
+   print('   ' + Console.blue('COMMANDS FOLDERS:'))
    print('   * store [tag]: store the current dir')
    print('   * jump [tag]: jump to tagged dir')
    print('   * jump: show jump selection')
    print('')
-   print('   * repo [tag]: store the current git repo')
+   print('   ' + Console.blue('COMMANDS REPOS:'))
+   print('   * store_repo [tag]: store the current git repo')
    print('   * reclone [tag]: clone repo in current dir')
    print('   * reclone: show reclone selection')
    print('')
+   print('   ' + Console.blue('COMMANDS SYNC:'))
+   print('   * store_sync [tag]: store the current folder sync')
+   print('   * resync [tag]: folder sync in current dir')
+   print('   * resync: show folder sync selection')
+   print('')
+   print('   ' + Console.blue('COMMANDS ADMIN:'))
    print('   * list: list stored dirs and repos')
    print('   * clear [tag]: remove tag')
    print('   * gui: show the admin gui')

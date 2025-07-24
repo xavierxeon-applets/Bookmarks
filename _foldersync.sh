@@ -15,4 +15,4 @@ function fsync {
    fi
 }
 
-complete -W "remote pull push" fsync
+complete -W "init pull push remote local" fsync

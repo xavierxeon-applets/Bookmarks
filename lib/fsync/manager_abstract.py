@@ -6,7 +6,7 @@ from subprocess import run
 from pathlib import Path
 from unittest import result
 
-from .console import Console
+from ..console import Console
 
 
 class ManagerAbstract:

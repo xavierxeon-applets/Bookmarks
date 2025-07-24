@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 
-from .console import Console
+from ..console import Console
 
 from .manager_abstract import ManagerAbstract
 

@@ -4,7 +4,7 @@ import os
 
 from .manager_abstract import ManagerAbstract
 
-from .console import Console
+from ..console import Console
 
 
 class ManagerInit(ManagerAbstract):

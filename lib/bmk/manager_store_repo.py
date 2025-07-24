@@ -4,15 +4,15 @@ import os
 from subprocess import run
 
 from .manager_abstract import ManagerAbstract
-from .console import Console
+from ..console import Console
 
 
-class ManagerRepo(ManagerAbstract):
+class ManagerStoreRepo(ManagerAbstract):
 
    @classmethod
    def command(cls):
 
-      return 'repo'
+      return 'store_repo'
 
    def execute(self):
 

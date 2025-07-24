@@ -9,34 +9,34 @@ from ..console import Console
 from .manager_abstract import ManagerAbstract
 
 
-class ManagerReclone(ManagerAbstract):
+class ManagerResync(ManagerAbstract):
 
-   _repoFile = str(Path.home()) + '/.bookmarks/repo'
-   _RecloneExitCode = 44
+   _syncFile = str(Path.home()) + '/.bookmarks/sync'
+   _SyncExitCode = 55
 
    @classmethod
    def command(cls):
 
-      return 'reclone'
+      return 'resync'
 
    def execute(self):
 
       if not self.tag:
-         self.cloneSelection()
+         self.syncSelection()
          return
 
-      self._cloneInternal(self.tag)
+      self._syncInternal(self.tag)
 
-   def cloneSelection(self):
+   def syncSelection(self):
 
       index = 1
       tagDict = dict()
-      for tag, giturl in self.data[ManagerAbstract.RepoKey].items():
+      for tag, giturl in self.data[ManagerAbstract.SyncKey].items():
          tagDict[index] = (tag, giturl)
          index = index + 1
 
       if not tagDict:
-         print(Console.blue('no repositories available'))
+         print(Console.blue('no sync folders available'))
          return
 
       for index, data in tagDict.items():
@@ -53,16 +53,16 @@ class ManagerReclone(ManagerAbstract):
          return
 
       gotoTag = tagDict[index][0]
-      self._cloneInternal(gotoTag)
+      self._syncInternal(gotoTag)
 
-   def _cloneInternal(self, gotoTag):
+   def _syncInternal(self, gotoTag):
 
-      if not gotoTag in self.data[ManagerAbstract.RepoKey]:
+      if not gotoTag in self.data[ManagerAbstract.SyncKey]:
          print(Console.magenta('tag not stored'), ':', gotoTag)
          return
 
-      giturl = self.data[ManagerAbstract.RepoKey][gotoTag]
-      with open(ManagerReclone._repoFile, 'w') as outfile:
-         outfile.write(giturl)
+      syncTarget = self.data[ManagerAbstract.SyncKey][gotoTag]
+      with open(ManagerResync._syncFile, 'w') as outfile:
+         outfile.write(syncTarget)
 
-      sys.exit(ManagerReclone._RecloneExitCode)
+      sys.exit(ManagerResync._SyncExitCode)

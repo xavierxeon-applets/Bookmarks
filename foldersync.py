@@ -2,7 +2,8 @@
 
 import sys
 
-from lib_fsync import Console, ManagerAbstract
+from lib import Console
+from lib.fsync import ManagerAbstract
 
 
 def printHelpAndExit():
