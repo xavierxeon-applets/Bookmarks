@@ -2,26 +2,20 @@
 
 import sys
 
-from lib_bmk import Console, ManagerAbstract
+from lib_fsync import Console, ManagerAbstract
 
 
 def printHelpAndExit():
 
-   print(Console.cyan('bmk', light=False) + ' [command] [tag]')
-   print('   jump around the file system')
+   print(Console.cyan('fsync', light=False) + ' [command]')
+   print('   sync folders')
    print('')
    print('   ' + Console.blue('COMMANDS:'))
-   print('   * store [tag]: store the current dir')
-   print('   * jump [tag]: jump to tagged dir')
-   print('   * jump: show jump selection')
-   print('')
-   print('   * repo [tag]: store the current git repo')
-   print('   * reclone [tag]: clone repo in current dir')
-   print('   * reclone: show reclone selection')
-   print('')
-   print('   * list: list stored dirs and repos')
-   print('   * clear [tag]: remove tag')
-   print('   * gui: show the admin gui')
+   print('   * init [computer:path]: store the remote desination')
+   print('   * pull: copy content from remote to local')
+   print('   * push: copy content from local to remote')
+   print('   * local: show local changes')
+   print('   * remote: show remote changes')
    sys.exit(0)
 
 
