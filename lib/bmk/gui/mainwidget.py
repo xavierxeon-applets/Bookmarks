@@ -8,6 +8,7 @@ from PySide6.QtQuickWidgets import QQuickWidget
 
 from .model_folder import ModelFolder
 from .model_repo import ModelRepo
+from .model_sync import ModelSync
 from .settings import Settings
 
 
@@ -29,6 +30,9 @@ class MainWidget(QWidget):
 
       self.modelRepo = ModelRepo()
       self.quickView.rootContext().setContextProperty('repoModel', self.modelRepo)
+
+      self.modelSync = ModelSync()
+      self.quickView.rootContext().setContextProperty('syncModel', self.modelSync)
 
       # load
       localPath = os.path.dirname(__file__)

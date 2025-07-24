@@ -1,7 +1,14 @@
 import QtQuick
 
-ListView {
-
-    model: folderModel
-    delegate: ModelDelegate {}
+Rectangle
+{
+   color: palette.base
+   
+   ListView {
+      anchors.fill: parent
+    
+      model: folderModel
+      delegate: ModelDelegate {}
+   }
 }
+

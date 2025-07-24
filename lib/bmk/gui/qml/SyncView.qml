@@ -7,7 +7,8 @@ Rectangle
    ListView {
       anchors.fill: parent
     
-      model: repoModel
+      model: syncModel
       delegate: ModelDelegate {}
    }
 }
+

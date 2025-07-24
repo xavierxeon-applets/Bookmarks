@@ -2,14 +2,15 @@ import QtQuick
 import QtQuick.Layouts
 
 Rectangle {
-    color: palette.base
+
+    color: palette.window
 
     GridLayout {
         id: grid
         anchors.fill: parent
 
-        columns: 2
-        columnSpacing: 0
+        columns: 3
+        columnSpacing: 5
 
         Header {
             text: "Folders"
@@ -19,12 +20,20 @@ Rectangle {
             text: "Repos"
             Layout.fillWidth: true
         }
-        FolderView {
+        Header {
+            text: "Sync"
+            Layout.fillWidth: true
+        }
 
+        FolderView {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }
         RepoView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+        SyncView {
             Layout.fillWidth: true
             Layout.fillHeight: true
         }

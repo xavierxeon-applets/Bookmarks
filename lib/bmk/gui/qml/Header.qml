@@ -4,8 +4,8 @@ Rectangle {
     id: header
 
     property string text
-    height: 40
     width: parent.width
+    height: 40
     color: palette.window
 
     Text {
