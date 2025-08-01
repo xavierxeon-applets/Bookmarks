@@ -20,15 +20,21 @@ class ManagerClear(ManagerAbstract):
 
       found = False
       for sectionName in [ManagerAbstract.DirKey, ManagerAbstract.RepoKey, ManagerAbstract.SyncKey]:
-         if not self.tag in self.data[sectionName]:
-            continue
 
-         del self.data[sectionName][self.tag]
-         found = True
-         print(Console.green('removed tag'), ':', self.tag, ' from section', sectionName)
+         if self.clear(sectionName, self.tag):
+            found = True
 
       if not found:
          print(Console.magenta('unkown tag'), ':', self.tag)
          return
 
       self.save()
+
+   def clear(self, sectionName, name):
+
+      if not name in self.data[sectionName]:
+         return False
+
+      del self.data[sectionName][name]
+      print(Console.green('removed tag'), ':', name, ' from section', sectionName)
+      return True

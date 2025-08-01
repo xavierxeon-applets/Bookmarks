@@ -70,3 +70,4 @@ class MainWidget(QWidget):
       print('remove selected entries')
       self.modelFolder.removeSelected()
       self.modelRepo.removeSelected()
+      self.modelSync.removeSelected()
