@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BOOKMARK_FUNC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"   
+BOOKMARK_FUNC_DIR="$(readlink -f "$0")"   
 
 function bmk {
 
