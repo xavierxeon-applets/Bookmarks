@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER_SYNC_FUNC_DIR="$(readlink -f "$0")"   
+FOLDER_SYNC_FUNC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 function fsync {
 
